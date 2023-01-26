@@ -43,7 +43,7 @@ export class User extends Model {
       }
     },
     {
-      sequelize: SequelizeService.getInstance(),
+      sequelize: SequelizeService.getUserInstance(),
       modelName: "User",
       tableName: "users",
       createdAt: false,

@@ -2,6 +2,7 @@ import express from 'express';
 import chalk from 'chalk';
 
 import { userRouter } from './routes/user.js';
+import { storeRouter } from './routes/store.js';
 
 
 
@@ -16,6 +17,7 @@ app.get('/health', (req, res) => {
 app.use(express.json());
 
 app.use('/users', userRouter);
+app.use('/stores', storeRouter);
 
 app.listen(4200, (err) => {
     err && console.error(err);
