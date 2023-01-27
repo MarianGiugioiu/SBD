@@ -58,7 +58,7 @@ User.prototype.generateJWT = function() {
   expirationDate.setDate(today.getDate() + 60);
 
   return jwt.sign({
-      id: this.id,
+      id: this.userId,
       email: this.email,
       role: this.role,
       exp: parseInt(expirationDate.getTime() / 1000, 10),

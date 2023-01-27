@@ -37,7 +37,7 @@ router.post('/login', (req, res) => {
             return res.status(401).json({ message: 'User not found' });
         }
 
-        if (!user.validPassword(req.body.password)) {
+        if (!user.validPassword(password)) {
             return res.status(401).json({ message: 'Incorrect password' });
         }
 
@@ -46,13 +46,13 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.post('/', async (req, res) => {
-    const { username, password, role, name } = req.body;
+router.post('/register', async (req, res) => {
+    const { username, password, name } = req.body;
     console.log(req.body);
     res.send(await User.create({
         username,
         password,
-        role,
+        role: 'user',
         name
     }));
 });

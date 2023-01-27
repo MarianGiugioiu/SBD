@@ -1,11 +1,10 @@
 import { Router } from "express";
 import { StoreUser } from "../models/user/store.js";
 import { StoreManager } from "../models/manager/store.js";
-import { checkRole } from "./middleware.js";
 
 const router = Router();
 
-router.get('/', checkRole(['user', 'manager']), async (req, res) => {
+router.get('/', async (req, res) => {
     StoreUser.findAll({
         raw:true
     })
@@ -16,7 +15,7 @@ router.get('/', checkRole(['user', 'manager']), async (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.get('/manager', checkRole(['manager']), async (req, res) => {
+router.get('/manager', async (req, res) => {
     StoreManager.findAll({
         raw:true
     })
@@ -39,7 +38,7 @@ router.get('/:id', async (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.post('/', checkRole(['user', 'manager']), async (req, res) => {
+router.post('/', async (req, res) => {
     const { location, name, businessHours } = req.body;
     res.send(await StoreUser.create({
         location,
@@ -48,7 +47,7 @@ router.post('/', checkRole(['user', 'manager']), async (req, res) => {
     }));
 });
 
-router.post('/manager', checkRole(['manager']), async (req, res) => {
+router.post('/manager', async (req, res) => {
     const { location, name, businessHours, averageMonthlyIncome } = req.body;
     res.send(await StoreManager.create({
         location,
@@ -58,4 +57,4 @@ router.post('/manager', checkRole(['manager']), async (req, res) => {
     }));
 });
 
-export { router as storeRouter };
+export { router as employeeRouter };

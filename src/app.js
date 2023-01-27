@@ -6,6 +6,8 @@ import { storeRouter } from './routes/store.js';
 import { Product } from './models/shared/product.js';
 import { Stock } from './models/shared/stock.js';
 import { StoreUser } from './models/user/store.js';
+import { productRouter } from './routes/product.js';
+import { employeeRouter } from './routes/employee.js';
 
 
 
@@ -19,14 +21,10 @@ app.get('/health', (req, res) => {
 
 app.use(express.json());
 
-Product.hasMany(Stock, { as: 'stocks' });
-StoreUser.hasMany(Stock, { as: 'stocks' });
-Stock.belongsTo(StoreUser, { foreignKey: 'storeId' });
-Stock.belongsTo(Product, { foreignKey: 'storeId' });
-
-
 app.use('/users', userRouter);
 app.use('/stores', storeRouter);
+app.use('/products', productRouter);
+app.use('/employees', employeeRouter);
 
 app.listen(4200, (err) => {
     err && console.error(err);
