@@ -3,6 +3,9 @@ import chalk from 'chalk';
 
 import { userRouter } from './routes/user.js';
 import { storeRouter } from './routes/store.js';
+import { Product } from './models/shared/product.js';
+import { Stock } from './models/shared/stock.js';
+import { StoreUser } from './models/user/store.js';
 
 
 
@@ -15,6 +18,12 @@ app.get('/health', (req, res) => {
 });
 
 app.use(express.json());
+
+Product.hasMany(Stock, { as: 'stocks' });
+StoreUser.hasMany(Stock, { as: 'stocks' });
+Stock.belongsTo(StoreUser, { foreignKey: 'storeId' });
+Stock.belongsTo(Product, { foreignKey: 'storeId' });
+
 
 app.use('/users', userRouter);
 app.use('/stores', storeRouter);

@@ -1,46 +1,44 @@
 import { DataTypes, Model } from "sequelize";
 import { SequelizeService } from "../../config/db.js";
-import { Stock } from "../shared/stock.js";
+import { Stock } from "./stock.js";
 
-export class StoreUser extends Model {
-  storeId;
-  location;
+export class Product extends Model {
+  productId;
   name;
-  businessHours;
+  weight;
+  producer;
 }
 
-StoreUser.init(
+Product.init(
   {
-    storeId: {
+    productId: {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
       defaultValue: DataTypes.UUIDV4,
-      field: "store_id",
-    },
-    location: {
-      type: DataTypes.STRING(100),
-      allowNull: false,
-      field: "location",
+      field: "product_id",
     },
     name: {
       type: DataTypes.STRING(50),
       allowNull: false,
       field: "name",
     },
-    businessHours: {
+    weaight: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+      field: "weight",
+    },
+    producer: {
       type: DataTypes.STRING(50),
-      allowNull: true,
-      field: "business_hours",
+      allowNull: false,
+      field: "producer",
     }
   },
   {
     sequelize: SequelizeService.getUserInstance(),
-    modelName: "Stores",
-    tableName: "masked_stores",
+    modelName: "Product",
+    tableName: "products",
     createdAt: false,
     updatedAt: false
   }
 );
-
-//StoreUser.hasMany(Stock, { foreignKey: 'storeId' });

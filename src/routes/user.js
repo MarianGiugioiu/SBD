@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { User } from "../models/user.js";
+import { User } from "../models/shared/user.js";
 
 const router = Router();
 
@@ -24,6 +24,26 @@ router.get('/:id', async (req, res) => {
         res.json(record)
     })
     .catch(err => res.status(500).json({ error: err.message }));
+});
+
+router.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    User.findOne({
+        where: {
+            email: username
+        }
+    }).then(user => {
+        if (!user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
+        if (!user.validPassword(req.body.password)) {
+            return res.status(401).json({ message: 'Incorrect password' });
+        }
+
+        const token = user.generateJWT();
+        return res.status(200).json({ token });
+    });
 });
 
 router.post('/', async (req, res) => {
