@@ -42,5 +42,3 @@ StoreUser.init(
     updatedAt: false
   }
 );
-
-//StoreUser.hasMany(Stock, { foreignKey: 'storeId' });

@@ -12,7 +12,7 @@ const sequelize = SequelizeService.getManagerInstance();
 const router = Router();
 
 router.get('/', checkRole(['user', 'manager']), async (req, res) => {
-    StoreUser.findAll({
+    ProductUser.findAll({
         raw:true
     })
     .then(records => {
