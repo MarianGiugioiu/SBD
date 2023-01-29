@@ -8,6 +8,7 @@ import { Stock } from './models/shared/stock.js';
 import { StoreUser } from './models/user/store.js';
 import { productRouter } from './routes/product.js';
 import { employeeRouter } from './routes/employee.js';
+import { checkRole, handleError } from './routes/middleware.js';
 
 
 
@@ -25,6 +26,8 @@ app.use('/users', userRouter);
 app.use('/stores', storeRouter);
 app.use('/products', productRouter);
 app.use('/employees', employeeRouter);
+
+app.use(handleError);
 
 app.listen(4200, (err) => {
     err && console.error(err);

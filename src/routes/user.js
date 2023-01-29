@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { User } from "../models/shared/user.js";
+import { Sequelize } from "sequelize";
 
 const router = Router();
 
@@ -8,7 +9,6 @@ router.get('/', async (req, res) => {
         raw:true
     })
     .then(records => {
-        console.log(records);
         res.json(records)
     })
     .catch(err => res.status(500).json({ error: err.message }));
@@ -20,7 +20,6 @@ router.get('/:id', async (req, res) => {
         raw:true
     })
     .then(record => {
-        console.log(record);
         res.json(record)
     })
     .catch(err => res.status(500).json({ error: err.message }));
@@ -30,14 +29,14 @@ router.post('/login', (req, res) => {
     const { username, password } = req.body;
     User.findOne({
         where: {
-            email: username
+            username
         }
-    }).then(user => {
+    }).then(async user => {
         if (!user) {
             return res.status(401).json({ message: 'User not found' });
         }
-
-        if (!user.validPassword(password)) {
+        
+        if (!(await User.validPassword(password, user.dataValues.password))) {
             return res.status(401).json({ message: 'Incorrect password' });
         }
 
@@ -46,18 +45,31 @@ router.post('/login', (req, res) => {
     });
 });
 
-router.post('/register', async (req, res) => {
+router.post('/register', async (req, res, next) => { 
     const { username, password, name } = req.body;
-    console.log(req.body);
-    res.send(await User.create({
+    User.create({
         username,
         password,
         role: 'user',
         name
-    }));
+    })
+    .then((item) => res.status(201).json(item))
+    .catch (next);
 });
 
-router.put('/:id', (req, res) => {
+router.post('/register/manager', async (req, res, next) => {
+    const { username, password, name } = req.body;
+    User.create({
+        username,
+        password,
+        role: 'manager',
+        name
+    })
+    .then((item) => res.status(201).json(item))
+    .catch (next);
+});
+
+router.put('/:id', (req, res, next) => {
     User.update(req.body, {
       where: { user_id: req.params.id },
       returning: true
@@ -66,7 +78,7 @@ router.put('/:id', (req, res) => {
         if (affectedCount) res.json(affectedRows);
         else res.status(404).json({ error: 'Record not found' });
     })
-    .catch(err => res.status(500).json({ error: err.message }));
+    .catch (next);
 });
 
 router.delete('/:id', (req, res) => {
@@ -78,6 +90,6 @@ router.delete('/:id', (req, res) => {
         else res.status(404).json({ error: 'Record not found' });
     })
     .catch(err => res.status(500).json({ error: err.message }));
-  });
+});
 
 export { router as userRouter };

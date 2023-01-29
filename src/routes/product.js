@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
         raw:true
     })
     .then(records => {
-        console.log(records);
         res.json(records)
     })
     .catch(err => res.status(500).json({ error: err.message }));

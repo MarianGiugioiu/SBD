@@ -9,7 +9,6 @@ router.get('/', async (req, res) => {
         raw:true
     })
     .then(records => {
-        console.log(records);
         res.json(records)
     })
     .catch(err => res.status(500).json({ error: err.message }));
@@ -20,7 +19,6 @@ router.get('/manager', async (req, res) => {
         raw:true
     })
     .then(records => {
-        console.log(records);
         res.json(records)
     })
     .catch(err => res.status(500).json({ error: err.message }));
@@ -32,7 +30,6 @@ router.get('/:id', async (req, res) => {
         raw:true
     })
     .then(record => {
-        console.log(record);
         res.json(record)
     })
     .catch(err => res.status(500).json({ error: err.message }));

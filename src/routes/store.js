@@ -10,7 +10,6 @@ router.get('/', checkRole(['user', 'manager']), async (req, res) => {
         raw:true
     })
     .then(records => {
-        console.log(records);
         res.json(records)
     })
     .catch(err => res.status(500).json({ error: err.message }));
@@ -21,7 +20,6 @@ router.get('/manager', checkRole(['manager']), async (req, res) => {
         raw:true
     })
     .then(records => {
-        console.log(records);
         res.json(records)
     })
     .catch(err => res.status(500).json({ error: err.message }));
@@ -33,29 +31,32 @@ router.get('/:id', async (req, res) => {
         raw:true
     })
     .then(record => {
-        console.log(record);
         res.json(record)
     })
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.post('/', checkRole(['user', 'manager']), async (req, res) => {
+router.post('/', checkRole(['user', 'manager']), async (req, res, next) => {
     const { location, name, businessHours } = req.body;
-    res.send(await StoreUser.create({
+    StoreUser.create({
         location,
         name,
         businessHours
-    }));
+    })
+    .then((item) => res.status(201).json(item))
+    .catch (next);
 });
 
-router.post('/manager', checkRole(['manager']), async (req, res) => {
+router.post('/manager', checkRole(['manager']), async (req, res, next) => {
     const { location, name, businessHours, averageMonthlyIncome } = req.body;
-    res.send(await StoreManager.create({
+    StoreManager.create({
         location,
         name,
         businessHours,
         averageMonthlyIncome
-    }));
+    })
+    .then((item) => res.status(201).json(item))
+    .catch (next);
 });
 
 export { router as storeRouter };
