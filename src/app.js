@@ -3,12 +3,9 @@ import chalk from 'chalk';
 
 import { userRouter } from './routes/user.js';
 import { storeRouter } from './routes/store.js';
-import { Product } from './models/shared/product.js';
-import { Stock } from './models/shared/stock.js';
-import { StoreUser } from './models/user/store.js';
 import { productRouter } from './routes/product.js';
 import { employeeRouter } from './routes/employee.js';
-import { checkRole, handleError } from './routes/middleware.js';
+import { handleError } from './routes/middleware.js';
 
 
 

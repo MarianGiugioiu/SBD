@@ -1,14 +1,14 @@
 import { DataTypes, Model } from "sequelize";
 import { SequelizeService } from "../../config/db.js";
 
-export class Product extends Model {
+export class ProductManager extends Model {
   productId;
   name;
   weight;
   producer;
 }
 
-Product.init(
+ProductManager.init(
   {
     productId: {
       type: DataTypes.UUID,
@@ -22,7 +22,7 @@ Product.init(
       allowNull: false,
       field: "name",
     },
-    weaight: {
+    weight: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
       field: "weight",
@@ -34,7 +34,7 @@ Product.init(
     }
   },
   {
-    sequelize: SequelizeService.getUserInstance(),
+    sequelize: SequelizeService.getManagerInstance(),
     modelName: "Product",
     tableName: "products",
     createdAt: false,

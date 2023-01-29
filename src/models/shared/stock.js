@@ -40,7 +40,7 @@ Stock.init(
     }
   },
   {
-    sequelize: SequelizeService.getUserInstance(),
+    sequelize: SequelizeService.getManagerInstance(),
     modelName: "Stock",
     tableName: "stocks",
     createdAt: false,

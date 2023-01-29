@@ -25,9 +25,9 @@ router.get('/manager', checkRole(['manager']), async (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.get('/:id', async (req, res) => {
-    User.findAll({
-        where: { user_id: req.params.id },
+router.get('/:id', checkRole(['user', 'manager']), async (req, res) => {
+    StoreUser.findAll({
+        where: { store_id: req.params.id },
         raw:true
     })
     .then(record => {
@@ -36,7 +36,18 @@ router.get('/:id', async (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-router.post('/', checkRole(['user', 'manager']), async (req, res, next) => {
+router.get('/manager/:id', checkRole(['manager']), async (req, res) => {
+    StoreManager.findAll({
+        where: { store_id: req.params.id },
+        raw:true
+    })
+    .then(record => {
+        res.json(record)
+    })
+    .catch(err => res.status(500).json({ error: err.message }));
+});
+
+router.post('/user', checkRole(['user', 'manager']), async (req, res, next) => {
     const { location, name, businessHours } = req.body;
     StoreUser.create({
         location,
@@ -47,7 +58,7 @@ router.post('/', checkRole(['user', 'manager']), async (req, res, next) => {
     .catch (next);
 });
 
-router.post('/manager', checkRole(['manager']), async (req, res, next) => {
+router.post('/', checkRole(['manager']), async (req, res, next) => {
     const { location, name, businessHours, averageMonthlyIncome } = req.body;
     StoreManager.create({
         location,
@@ -55,8 +66,31 @@ router.post('/manager', checkRole(['manager']), async (req, res, next) => {
         businessHours,
         averageMonthlyIncome
     })
-    .then((item) => res.status(201).json(item))
+    .then((item) =>{res.status(201).json(item)})
     .catch (next);
+});
+
+router.put('/:id', checkRole(['manager']), (req, res, next) => {
+    StoreManager.update(req.body, {
+      where: { store_id: req.params.id },
+      returning: true
+    })
+    .then(([ affectedCount, affectedRows ]) => {
+        if (affectedCount) res.json(affectedRows);
+        else res.status(404).json({ error: 'Record not found' });
+    })
+    .catch (next);
+});
+
+router.delete('/:id', checkRole(['manager']), (req, res, next) => {
+    StoreManager.destroy({
+      where: { store_id: req.params.id },
+    })
+    .then(affectedCount => {
+        if (affectedCount) res.json({ message: 'Record deleted' });
+        else res.status(404).json({ error: 'Record not found' });
+    })
+    .catch(err => res.status(500).json({ error: err.message }));
 });
 
 export { router as storeRouter };

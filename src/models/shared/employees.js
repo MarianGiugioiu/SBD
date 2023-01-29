@@ -24,12 +24,12 @@ Employee.init(
         type: DataTypes.UUID,
         allowNull: false,
         field: "manager_id",
-      },
-      employeeId: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        field: "store_id",
-      },
+    },
+    storeId: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      field: "store_id",
+    },
     firstName: {
       type: DataTypes.STRING(50),
       allowNull: false,
@@ -54,7 +54,7 @@ Employee.init(
   {
     sequelize: SequelizeService.getUserInstance(),
     modelName: "Employee",
-    tableName: "employees",
+    tableName: "masked_employees",
     createdAt: false,
     updatedAt: false
   }

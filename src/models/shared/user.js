@@ -110,6 +110,6 @@ User.prototype.generateJWT = function () {
   };
   const secret = process.env.TOKEN_SECRET;
 
-  const token = jwt.sign(data, secret, {expiresIn: 60 * 30});
+  const token = jwt.sign(data, secret, {expiresIn: 60 * 300});
   return token;
 }

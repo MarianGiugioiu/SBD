@@ -1,5 +1,6 @@
 import { DataTypes, Model } from "sequelize";
 import { SequelizeService } from "../../config/db.js";
+import { Stock } from "../shared/stock.js";
 
 export class StoreManager extends Model {
     storeId;
@@ -33,7 +34,7 @@ export class StoreManager extends Model {
         allowNull: true,
         field: "business_hours",
       },
-      avaerageMonthlyIncome: {
+      averageMonthlyIncome: {
         type: DataTypes.DECIMAL(10,2),
         allowNull: true,
         field: "average_monthly_income",
