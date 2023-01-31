@@ -69,27 +69,4 @@ router.post('/register/manager', async (req, res, next) => {
     .catch (next);
 });
 
-router.put('/:id', (req, res, next) => {
-    User.update(req.body, {
-      where: { user_id: req.params.id },
-      returning: true
-    })
-    .then(([ affectedCount, affectedRows ]) => {
-        if (affectedCount) res.json(affectedRows);
-        else res.status(404).json({ error: 'Record not found' });
-    })
-    .catch (next);
-});
-
-router.delete('/:id', (req, res, next) => {
-    User.destroy({
-      where: { user_id: req.params.id }
-    })
-    .then(affectedCount => {
-        if (affectedCount) res.json({ message: 'Record deleted' });
-        else res.status(404).json({ error: 'Record not found' });
-    })
-    .catch(err => res.status(500).json({ error: err.message }));
-});
-
 export { router as userRouter };
