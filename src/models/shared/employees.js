@@ -35,7 +35,7 @@ Employee.init(
       allowNull: false,
       field: "first_name",
     },
-    firstName: {
+    lastName: {
         type: DataTypes.STRING(50),
         allowNull: false,
         field: "last_name",

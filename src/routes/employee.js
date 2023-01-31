@@ -18,7 +18,7 @@ router.get('/', checkRole(['user', 'manager']), async (req, res) => {
 
 router.get('/:id',checkRole(['user', 'manager']), async (req, res) => {
     Employee.findAll({
-        where: { store_id: req.params.id },
+        where: { employee_id: req.params.id },
         raw:true
     })
     .then(record => {
